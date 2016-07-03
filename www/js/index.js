@@ -68,8 +68,8 @@ function startScan() {
 		document.getElementById("link").href="javascript:void(0)";
 		}
 		resultDiv.innerHTML = "";
-			var s = "Result: " + result.text + "\n" +
-			"Format: " + result.format + "\n" +
+			var s = "Result: " + result.text + "</br>" +
+			"Format: " + result.format + "</br>" +
 			"Cancelled: " + result.cancelled;
 			resultDiv.innerHTML = s;
 		},
