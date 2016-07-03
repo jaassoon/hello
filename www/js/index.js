@@ -26,7 +26,8 @@ var app = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('deviceready', init, false);
+//        document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     // deviceready Event Handler
     //
@@ -48,3 +49,43 @@ var app = {
 };
 
 app.initialize();
+var resultDiv;
+
+//document.addEventListener("deviceready", init, false);
+function init() {
+	document.querySelector("#startScan").addEventListener("touchend", startScan, false);
+	document.querySelector("#startEncode").addEventListener("touchend", startEncode, false);
+	resultDiv = document.querySelector("#results");
+}
+
+function startScan() {
+
+	cordova.plugins.barcodeScanner.scan(
+		function (result) {
+		if(result.text.indexOf("http")!=-1){
+		document.getElementById("link").href=result.text;
+		}else{
+		document.getElementById("link").href="javascript:void(0)";
+		}
+		resultDiv.innerHTML = "";
+			var s = "Result: " + result.text + "\n" +
+			"Format: " + result.format + "\n" +
+			"Cancelled: " + result.cancelled;
+			resultDiv.innerHTML = s;
+		},
+		function (error) {
+			console.log("Scanning failed: " + error);
+		}
+	);
+
+}
+function startEncode(){
+console.log("##start_encode");
+cordova.plugins.barcodeScanner.encode(cordova.plugins.barcodeScanner.Encode.TEXT_TYPE, "http://www.nytimes.com", function(success) {
+            console.log("encode success: " + success);
+          }, function(fail) {
+            console.log("encoding failed: " + fail);
+          }
+        );
+console.log("##end_encode");
+}
